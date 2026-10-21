@@ -2,6 +2,9 @@ import io
 
 def assemble():
 
+    def register_decode(R):
+        return int(R[-1:], 16)
+
     machinecode = bytearray(256)
 
     with io.open("main.scp", "r") as f:
@@ -22,7 +25,11 @@ def assemble():
 
         match opcode:
             case "PRINT":
-                machinecode[codelineindex*2] = 0x0 << 4 | int(command[1], 16)
+                machinecode[codelineindex*2] = 0x0 << 4 | register_decode(command[1])
+                machinecode[codelineindex*2 + 1] = 0x00
+            
+            case "LOADHEX":
+                machinecode[codelineindex*2] = 0x2 << 4 | register_decode(command[1])
                 machinecode[codelineindex*2 + 1] = int(command[2], 16) << 4 | int(command[3], 16)
 
             case "HALT":
@@ -63,12 +70,12 @@ def shift_bin(R, S, N):
     elif S == 1:
         cpuregister[R] = (cpuregister[R] << N) & 0XFF
 
-opcodes[0X0] = lambda X, Y, Z: print(f"{X:X}{Y:X}{Z:X}") #Print XYZ as hex on the terminal.
+opcodes[0X0] = lambda R, nib2, nib3: print(f"{cpuregister[R]:02X}") #Print Register R's contents as hex on the terminal.
 opcodes[0X1] = lambda R, X, Y: ( #LOAD the register R with the bit pattern stored in memory cell XY
     cellid := X << 4 | Y,
     load_cell_register(R, cellid),
     )
-opcodes[0X2] = lambda R, X, Y: ( #LOAD the register R with the bit pattern XY
+opcodes[0X2] = lambda R, X, Y: ( #LOAD the register R with the hex value XY
     bitpattern := X << 4 | Y,
     load_byte_register(R, bitpattern),
     )

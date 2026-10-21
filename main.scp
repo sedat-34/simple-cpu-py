@@ -1,2 +1,3 @@
-PRINT 0 F B !Anything after command argument 3 is ignored by the assembler.
-HALT  0 0 0 !Anything after an ! is explicitly a comment.
+LOADHEX R1 F B!Load register 1 with value FB
+PRINT R1 0 0!Print contents of register 1
+HALT  0 0 0!Anything after an ! is explicitly a comment.
