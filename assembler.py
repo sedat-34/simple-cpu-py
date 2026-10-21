@@ -18,9 +18,8 @@ def assemble():
 
     for line in codelines:
         command = line.split()
-        for i in range(3):
-            if not command[i+1]:
-                command[i+1] = 0
+        while len(command) < 4:
+            command.append("0")
         opcode = command[0]
 
         match opcode:
