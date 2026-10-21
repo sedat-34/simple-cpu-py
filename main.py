@@ -4,14 +4,12 @@ def assemble():
 
     machinecode = bytearray(256)
 
-    codefile = io.open("main.scp", "r")
-    rawcode = codefile.read()
-    codefile.close()
+    with io.open("main.scp", "r") as f:
+        rawcode = f.read()
 
     codelines = rawcode.splitlines()
-
-    fileline = 0
-    print(type(fileline))
+    print(codelines)
+    codelineindex = 0
 
     for line in codelines:
         command = line.split()
@@ -19,21 +17,21 @@ def assemble():
             if not command[i+1]:
                 command[i+1] = 0
         opcode = command[0]
-        print(opcode, fileline)
+
         match opcode:
             case "PRINT":
-                machinecode[fileline*2] = 0x0 << 4 | int(command[1], 16)
-                machinecode[fileline*2 + 1] = int(command[2], 16) << 4 | int(command[3], 16)
+                machinecode[codelineindex*2] = 0x0 << 4 | int(command[1], 16)
+                machinecode[codelineindex*2 + 1] = int(command[2], 16) << 4 | int(command[3], 16)
+
             case "HALT":
-                machinecode[fileline*2] = 0XF0
-                machinecode[fileline*2 + 1] = 0x00
-        fileline = fileline + 1
+                machinecode[codelineindex*2] = 0xF0
+                machinecode[codelineindex*2 + 1] = 0x00
+        codelineindex += 1
 
-                
-
+    
     return machinecode
 
-memory = assemble()
+memory = assemble() #Assemble given scp (simple-cpu-py) program into custom hexadecimal format and load to memory
 
 cpuregister = [None] * 16 #Init cpu registers R0-RF
 programcounter = 0X00 #Init pc from beginning of memory
