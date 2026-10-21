@@ -15,12 +15,10 @@ memory[0x03] = 0x00
 
 while not halted:
     #Fetch
-    memoryatprogramcounter = f"{memory[programcounter]:02x}"
-    memoryafterwards = f"{memory[programcounter+1]:02x}"
-    loadedhex = memoryatprogramcounter + memoryafterwards
+    loadedhex = memory[programcounter] << 8 | memory[programcounter + 1]
 
     #Decode
-    loadedhexstr = str(loadedhex)
+    loadedhexstr = f"{loadedhex:04x}"
     activeopcode = opcodes[int(loadedhexstr[0], 16)]
     operands = [None] * 4
     for i in range(3):
