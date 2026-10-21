@@ -35,6 +35,10 @@ def assemble():
                 machinecode[codelineindex*2] = 0x2 << 4 | register_decode(command[1])
                 machinecode[codelineindex*2 + 1] = int(command[2], 16)
 
+            case "STORECELL":
+                machinecode[codelineindex*2] = 0x3 << 4 | register_decode(command[1])
+                machinecode[codelineindex*2 + 1] = int(command[2], 16)
+
             case "LOOP:":
                 machinecode[codelineindex*2] = 0x7 << 4 | register_decode(command[1])
                 machinecode[codelineindex*2 + 1] = register_decode(command[2]) << 4 | int(command[3], 16)
