@@ -13,6 +13,12 @@ The cpu has 16 registers (R0-RF) and 256 bytes of emulated memory.
 
 ## Assembly reference
 
+To comment on any line, write anything after an ! at the end of code on that line
+
+In code, a register of id X is represented as RX (single hex digit)
+
+In code, a cell of id XY is represented as CXY (two hex digits, pad 0 at the beginning if needed)
+
 ### PRINT RX
 
 Prints the data in register X to the terminal
@@ -28,6 +34,12 @@ Loads the hexadecimal YZ in register X
 ### STORECELL RX CYZ
 
 Stores the data in register X in emulated cell YZ
+
+### ADD RX RY RZ
+
+Adds RY and RZ, stores result in RX. Handles overflow automatically.
+
+### SHIFT
 
 ### LOOP: RX RY Z
 

@@ -67,11 +67,11 @@ opcodes[0X5] = lambda R, S, T: ( #AND RS and RT, store in RR.
 opcodes[0X6] = lambda R, S, N: ( #SHIFT RR's contents N*sign times. S == 0, shift right; S==1, shift left.
     shift_bin(R, S, N)
 )
-opcodes[0x7] = lambda R, S, X: ( #Initialise a LOOP: with counter at register R with 4-bit hex value X
+opcodes[0XD] = lambda R, S, X: ( #Initialise a LOOP: with counter at register R with 4-bit hex value X
                                  #Store the loop's starting memory cell at register S.
     init_loop(R, S, X)
 )
-opcodes[0x8] = lambda R, S, nib3: (# ENDLOOP. Check if register R is zero. if not, JUMP to address stored at register S
+opcodes[0XE] = lambda R, S, nib3: (# ENDLOOP. Check if register R is zero. if not, JUMP to address stored at register S
     check_loop(R, S)
 )
 opcodes[0XF] = lambda nib1, nib2, nib3: globals().update({'halted': True})
