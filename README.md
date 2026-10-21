@@ -1,4 +1,7 @@
 # Simple-Cpu-Py
+(c) Sedat Arıtürk 2026 under the MIT License
+
+See [LICENSE](LICENSE) for information.
 
 ## What is this?
 This is a simple emulated 16-bit CPU and assembler running on Python.
@@ -39,7 +42,11 @@ Stores the data in register X in emulated cell YZ
 
 Adds RY and RZ, stores result in RX. Handles overflow automatically.
 
-### SHIFT
+### SHIFT RX S N
+
+Shifts RX' value N times (range 0 - F) in a direction determined by S (0 or 1)
+
+If S is 0, the value will be shifted right. Otherwise, it will be shifted left.
 
 ### LOOP: RX RY Z
 
