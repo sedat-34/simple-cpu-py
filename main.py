@@ -25,7 +25,7 @@ def shift_bin(R, S, N):
     if S == 0:
         cpuregister[R] = cpuregister[R] >> N
     elif S == 1:
-        shiftedR = R << N
+        shiftedR = cpuregister[R] << N
         while shiftedR > 255: #Drop the greatest bits if the value exceeds 0xFF
             shiftedR = shiftedR >> 1
         cpuregister[R] = shiftedR
@@ -85,7 +85,7 @@ memory[0x19] = 0x00 #Print nibbles 2-4. 0x19 was overwritten with "R1 AND R2". B
 memory[0x1A] = 0x21
 memory[0x1B] = 0x01 #Load hex 01 in R1
 memory[0x1C] = 0x61
-memory[0x1D] = 0x11 #Shift the value in R1 by 1 bit to the right. This is equivalent to multiplying by 2
+memory[0x1D] = 0x12 #Shift the value in R1 by 2 bits to the left. This is equivalent to multiplying by 2
 memory[0x1E] = 0x31
 memory[0x1F] = 0x21 #Store the new R1 value in memory cell 21
 memory[0x20] = 0x00
