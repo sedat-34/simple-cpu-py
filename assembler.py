@@ -4,6 +4,8 @@ def assemble():
 
     def register_decode(R): #R0 - R15 become integers 0X0-0XF
         return int(R[-1:], 16)
+    def cell_decode(C): #R0 - R15 become integers 0X0-0XF
+        return int(C[-1:], 16)
 
     machinecode = bytearray(256) #Initialise empty machine code.
 
@@ -29,7 +31,7 @@ def assemble():
 
             case "LOADCELL":
                 machinecode[codelineindex*2] = 0x1 << 4 | register_decode(command[1])
-                machinecode[codelineindex*2 + 1] = int(command[2], 16)
+                machinecode[codelineindex*2 + 1] =  cell_decode(command[2])
 
             case "LOADHEX":
                 machinecode[codelineindex*2] = 0x2 << 4 | register_decode(command[1])
@@ -37,7 +39,7 @@ def assemble():
 
             case "STORECELL":
                 machinecode[codelineindex*2] = 0x3 << 4 | register_decode(command[1])
-                machinecode[codelineindex*2 + 1] = int(command[2], 16)
+                machinecode[codelineindex*2 + 1] = cell_decode(command[2])
 
             case "LOOP:":
                 machinecode[codelineindex*2] = 0x7 << 4 | register_decode(command[1])

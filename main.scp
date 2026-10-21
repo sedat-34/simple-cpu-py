@@ -1,12 +1,12 @@
-LOADHEX   R0 FB   !Load register 0 with value FB
-PRINT     R0      !Print contents of register 0
-LOADHEX   R0 19   !Load a new value into R0
-STORECELL R0 FF   !Store it in cell 0xFF.
-LOADCELL  R1 FF   !Load cell 0xFF's contents into register 1. Should be row 1, columnds 2 and 3 of the assembled hex code.
-LOADHEX   R2 07   !Load hex 0x07 in register 2.
-LOOP:     RE RF F !Initialise loop that runs F times. Check if R2 = 0, if not, return to cell stored at RF
+LOADHEX   R0  FB    !Load register 0 with value FB
+PRINT     R0        !Print contents of register 0
+LOADHEX   R0  19    !Load a new value into R0
+STORECELL R0  CFF   !Store it in cell 0xFF.
+LOADCELL  R1  CFF   !Load cell 0xFF's contents into register 1. Should be row 1, columnds 2 and 3 of the assembled hex code.
+LOADHEX   R2  07    !Load hex 0x07 in register 2.
+LOOP:     RE  RF F  !Initialise loop that runs F+1 times.
 PRINT     R1
 PRINT     R2
-PRINT     RE      !Prints 19, 07, remaining loops.
-ENDLOOP   RE RF
-HALT              !Anything after an ! is explicitly a comment. I hope you like my first language.
+PRINT     RE        !Prints 19, 07, number of remaining loops.
+ENDLOOP   RE RF     !Check if R2 = 0, if not, return to cell stored at RF
+HALT                !Anything after an ! is explicitly a comment. I hope you like my first language.
