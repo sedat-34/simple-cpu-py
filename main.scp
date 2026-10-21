@@ -1,3 +1,5 @@
-LOADHEX R1 F B!Load register 1 with value FB
-PRINT R1 0 0!Print contents of register 1
-HALT  0 0 0!Anything after an ! is explicitly a comment.
+LOADHEX  R0 F  B !Load register 0 with value FB
+PRINT    R0 0  0 !Print contents of register 0
+LOADCELL R1 0  1 !Load cell 0x01's contents into register 1. Should be row 1, columnds 2 and 3 of the assembled hex code.
+PRINT    R1 0  0 !Print contents of register 1
+HALT     0  0  0 !Anything after an ! is explicitly a comment.
