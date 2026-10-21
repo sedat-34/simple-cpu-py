@@ -1,10 +1,9 @@
 memory = bytearray(256)
 cpuregister = [None] * 16 #Init cpu registers R0-RF
 programcounter = 0X00 #Init pc from beginning of memory
-loadedhex = (0X1000) #Placeholder halt command
+loadedhex = (0XF000) #Placeholder halt command
 halted = False
 
-sum = 0X00 #Initialise custom sum register.
 opcodes = [None] * 16 #Initialise opcodes list.
 
 def load_byte_register(R, B):
@@ -17,13 +16,19 @@ def store_register_cell(R, C):
     memory[C] = cpuregister[R]
 
 def add_bin(R, S, T):
-    sum = cpuregister[S] + cpuregister[T]
-    sum = sum & 0XFF
-    cpuregister[R] = sum
-    sum = 0X00
+    cpuregister[R] = (cpuregister[S] + cpuregister[T]) & 0XFF
 
 def and_bin(R, S, T):
     cpuregister[R] = cpuregister[S] & cpuregister[T] & 0XFF
+
+def shift_bin(R, S, N):
+    if S == 0:
+        cpuregister[R] = cpuregister[R] >> N
+    elif S == 1:
+        shiftedR = R << N
+        while shiftedR > 255: #Drop the greatest bits if the value exceeds 0xFF
+            shiftedR = shiftedR >> 1
+        cpuregister[R] = shiftedR
 
 opcodes[0X0] = lambda X, Y, Z: print(f"{X:X}{Y:X}{Z:X}") #Print XYZ as hex on the terminal.
 opcodes[0X1] = lambda R, X, Y: ( #LOAD the register R with the bit pattern stored in memory cell XY
@@ -41,8 +46,11 @@ opcodes[0X3] = lambda R, X, Y: ( #STORE the bit pattern found in register R in m
 opcodes[0X4] = lambda R, S, T: ( #ADD RS and RT, store in RR. Handles overflow.
     add_bin(R, S, T)
     )
-opcodes[0X05] = lambda R, S, T: ( #AND RS and RT, store in RR.
+opcodes[0X5] = lambda R, S, T: ( #AND RS and RT, store in RR.
     and_bin(R, S, T)
+)
+opcodes[0X6] = lambda R, S, N: ( #Shift RR's contents N*sign times. S == 0, shift right; S==1, shift left.
+    shift_bin(R, S, N)
 
 )
 opcodes[0XF] = lambda nib1, nib2, nib3: globals().update({'halted': True})
@@ -65,17 +73,25 @@ memory[0X0D] = 0X0f #Store the contents of R3 in cell 0X0F
 memory[0X0E] = 0X00
 memory[0X0F] = 0X00 #Print nibbles 2-4 of cells 0X0E and 0X0F. 0X0F was overwritten with the sums of R1 and R2.
 memory[0x10] = 0X21
-memory[0x11] = 0x01 #Load hex 01 into R1
+memory[0x11] = 0x02 #Load hex 02 into R1
 memory[0x12] = 0X22
-memory[0x13] = 0x03 #Load hex 01 into R2
+memory[0x13] = 0x06 #Load hex 06 into R2
 memory[0x14] = 0X53
 memory[0x15] = 0x12 #Store "R1 AND R2" in R3
 memory[0x16] = 0x33
 memory[0x17] = 0x19 #Load R3 in cell 0x19
 memory[0x18] = 0x00
-memory[0x19] = 0x00 #Print nibbles 2-4. 0x19 was overwritten with "R1 AND R2"
-memory[0X1A] = 0XF0
-memory[0X1B] = 0X00 #Halt.
+memory[0x19] = 0x00 #Print nibbles 2-4. 0x19 was overwritten with "R1 AND R2". Binary 0010 & 0110 should return hex "2" in this example.
+memory[0x1A] = 0x21
+memory[0x1B] = 0x01 #Load hex 01 in R1
+memory[0x1C] = 0x61
+memory[0x1D] = 0x11 #Shift the value in R1 by 1 bit to the right. This is equivalent to multiplying by 2
+memory[0x1E] = 0x31
+memory[0x1F] = 0x21 #Store the new R1 value in memory cell 21
+memory[0x20] = 0x00
+memory[0x21] = 0x00 #Print nibbles. The last 2 nibbles should be R1
+memory[0X22] = 0XF0
+memory[0X23] = 0X00 #Halt.
 memory[0X97] = 0XFB
 
 
