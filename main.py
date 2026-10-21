@@ -8,6 +8,8 @@ def assemble():
         rawcode = f.read()
 
     codelines = rawcode.splitlines()
+    for i in range(len(codelines)):
+        codelines[i] = codelines[i].split("!")[0]
     print(codelines)
     codelineindex = 0
 

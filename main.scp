@@ -1,2 +1,2 @@
-PRINT 0 F B Anything after command argument 3 is ignored by the assembler.
-HALT  0 0 0 Please note that any script cannot exceed 256 lines at this time.
+PRINT 0 F B !Anything after command argument 3 is ignored by the assembler.
+HALT  0 0 0 !Anything after an ! is explicitly a comment.
