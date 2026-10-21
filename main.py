@@ -25,10 +25,7 @@ def shift_bin(R, S, N):
     if S == 0:
         cpuregister[R] = cpuregister[R] >> N
     elif S == 1:
-        shiftedR = cpuregister[R] << N
-        while shiftedR > 255: #Drop the greatest bits if the value exceeds 0xFF
-            shiftedR = shiftedR >> 1
-        cpuregister[R] = shiftedR
+        cpuregister[R] = (cpuregister[R] << N) & 0XFF
 
 opcodes[0X0] = lambda X, Y, Z: print(f"{X:X}{Y:X}{Z:X}") #Print XYZ as hex on the terminal.
 opcodes[0X1] = lambda R, X, Y: ( #LOAD the register R with the bit pattern stored in memory cell XY
