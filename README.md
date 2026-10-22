@@ -24,9 +24,13 @@ In code, a cell of id XY is represented as CXY (two hex digits, pad 0 at the beg
 
 ### PRINT RX TY
 
-Prints the data in register X to the terminal
+Prints the data in register X to the terminal in type Y
 
-If Y == 0, prints as hexadecimals. If Y == 1, prints as decimals.
+Y = 0 > Hexadecimal
+
+Y = 1 > Decimal
+
+Y = 2 > Binary
 
 ### LOADCELL RX CYZ
 
