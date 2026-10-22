@@ -12,13 +12,25 @@ halted = False
 
 opcodes = [None] * 16 #Initialise opcodes list.
 
-def print_cpu(R, T):
+def print_cpu(T, R, L):
     if T == 0: #Print as hexadecimal
         print(f"R{R:X} is {cpuregister[R]:02X} in hex")
     elif T == 1: #Print as decimal
         print(f"R{R:X} is {cpuregister[R]} in decimal")
     elif T == 2: #Print as binary (8-bits)
         print(f"R{R} is {cpuregister[R]:08b} in binary")
+    elif T == 3: #Print L characters from cell id stored in Register R to id + L as characters.
+        if L == 0:
+            print(cpuregister[R])
+        else:
+            localstring = ""
+            initialcellid = cpuregister[R]
+            for i in range(L):
+                if initialcellid + i > 255:
+                    break
+                else:
+                    localstring = localstring + chr(memory[initialcellid + i])
+            print(localstring)
 
 def load_byte_register(R, B):
     cpuregister[R] = B
@@ -64,7 +76,7 @@ def check_loop(R, S):
         jumped = True
 
 
-opcodes[0X0] = lambda Register, Type, nib3: print_cpu(Register, Type) #Print Register R's contents as hex on the terminal.
+opcodes[0X0] = lambda Type, Register, Length: print_cpu(Type, Register, Length) #Print Register R's contents on the terminal.
 opcodes[0X1] = lambda R, X, Y: ( #LOAD the register R with the bit pattern stored in memory cell XY
     cellid := X << 4 | Y,
     load_cell_register(R, cellid),

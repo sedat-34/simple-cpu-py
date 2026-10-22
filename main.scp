@@ -1,32 +1,72 @@
+!Showcase hex loading, loading from cell, storing in cell, hex printing.
 LOADHEX   R0  FB     !Load register 0 with value FB
-PRINT     R0  T0     !Print contents of register 0
+PRINT     T0  R0     !Print contents of register 0
 LOADHEX   R0  19     !Load a new value into R0
 STORECELL R0  CFF    !Store it in cell 0xFF.
-LOADCELL  R1  CFF    !Load cell 0xFFs contents into register 1. Should be row 1, columnds 2 and 3 of the assembled hex code.
+LOADCELL  R1  CFF    !Load cell 0xFFs contents into register 1.
+PRINT     T0  R1     !Show that the value was succesfully copied over.
 LOADHEX   R2  07     !Load hex 0x07 in register 2.
+
+!This part of the code demonstrates loops.
 LOOP:     RE  RF  1  !Initialise loop that runs 1+1 = 2 times.
-PRINT     R1  T0     !Print as hexadecimals.
-PRINT     R2  T0
+PRINT     T0  R1     !Print as hexadecimals.
+PRINT     T0  R2
 ENDLOOP   RE  RF     !Check if RE = 0, if not, return to cell stored at RF
-STORECELL R1  CFE    !An arbitrary command which used to intervene with the machine code before hex_strip() in the assembler was reworked.
+
+STORECELL R1  CFE    !This used to bug out the program before the assembler was reworked. It's here to prove there are no inter-line editing shenanigans.
+
+!Showcase ADD operation.
 LOADHEX   R0  01
 LOADHEX   R1  01
 ADD       R2  R0  R1 !Perform addition on R0 and R1, place value in R2.
-PRINT     R2  T1     !Log result
-LOADHEX   R0  05     !Load 07 (binary 101) in R0
-PRINT     R0  T2     !Print R0 as an 8-bit binary string
+PRINT     T1  R2     !Log result
+
+!Showcase AND operation and binary printing.
+LOADHEX   R0  05     !Load 05 (binary 101) in R0
+PRINT     T2  R0     !Print R0 as an 8-bit binary string
 LOADHEX   R1  03     !Load 03 (binary 11) in R1
-PRINT     R1  T2     !Print R1 as an 8-bit binary string
+PRINT     T2  R1     !Print R1 as an 8-bit binary string
 AND       R2  R0  R1 !Perform binary AND on the bits of R0 and R1, place result in R2.
-PRINT     R2  T2     !Log result in binary
+PRINT     T2  R2     !Log result in binary
+
+!Showcase bit-shifting to the left and right to multiply by powers of 2.
 LOADHEX   R0  04     !Load 04 into R0
 LOOP:     R1  R2  2
-PRINT     R0  T1     !Print current value of R0 as decimals.
+PRINT     T1  R0     !Print current value of R0 as decimals.
 SHIFT     R0  0   1  !Bit-shift to the right by 1 bit. Equivalent to "floor dividing" by 2.
 ENDLOOP   R1  R2
 LOADHEX   R0  04     !Load 04 into R0
 LOOP:     R1  R2  2
-PRINT     R0  T1     !Print current value of R0 as decimals.
+PRINT     T1  R0     !Print current value of R0 as decimals.
 SHIFT     R0  1   1  !Bit-shift to the left by 1 bit. Equivalent to multiplying by 2.
-ENDLOOP   R1  R2
+
+!Demonstrate string printing.
+ENDLOOP   R1  R2     !Load each character into individual cells.
+LOADHEX   R0  48
+STORECELL R0  CF4
+LOADHEX   R0  45
+STORECELL R0  CF5
+LOADHEX   R0  4C
+STORECELL R0  CF6
+LOADHEX   R0  4C
+STORECELL R0  CF7
+LOADHEX   R0  4F
+STORECELL R0  CF8
+LOADHEX   R0  20
+STORECELL R0  CF9
+LOADHEX   R0  57
+STORECELL R0  CFB
+LOADHEX   R0  4F
+STORECELL R0  CFC
+LOADHEX   R0  52
+STORECELL R0  CFD
+LOADHEX   R0  4C
+STORECELL R0  CFE
+LOADHEX   R0  44
+STORECELL R0  CFF
+LOADHEX   R0  F4     !Load the location of the beginning of "HELLO WORLD" in R0.
+PRINT     T3  R0  C  !Print "HELLO WORLD".
+
+!Finally, halt the program execution.
+!If execution isn't halted, the CPU keeps increating the PC until it either encounters new code or runs out of execution space.
 HALT                 !Anything after an ! is explicitly a comment. I hope you like my first language.

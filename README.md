@@ -14,21 +14,27 @@ The cpu has 16 registers (R0-RF) and 256 bytes of emulated memory.
 
 ## Assembly reference
 
-To comment on any line, write anything after an ! at the end of code on that line
+To comment on any line, write anything after an ! at the end of code on that line or start a comment-only line with an !
 
 In code, a register of id X is represented as RX (single hex digit)
 
 In code, a cell of id XY is represented as CXY (two hex digits, pad 0 at the beginning if needed)
 
-### PRINT RX TY
+### PRINT TX RY (Optional: L)
 
-Prints the data in register X to the terminal in type Y
+Prints the data in register Y to the terminal in type X
 
-Y = 0 > Hexadecimal
+X = 0 > Hexadecimal
 
-Y = 1 > Decimal
+X = 1 > Decimal
 
-Y = 2 > Binary
+X = 2 > Binary
+
+x = 3 > ASCII text
+
+In ASCII type, L is used such that the data starts from the cell stored in RY and moves on for L cells.
+
+L can only be a maximum of 15.
 
 ### LOADCELL RX CYZ
 
@@ -71,7 +77,8 @@ Halt execution.
 ## Limitations
 
 A script cannot exceed 128 LOC.
-The assembler cannot detect invalid code.
+
+The assembler cannot detect invalid code dynamically.
 
 # Setup and execution
 
