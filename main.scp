@@ -39,10 +39,10 @@ LOADHEX   R0  04     !Load 04 into R0
 LOOP:     R1  R2  2
 PRINT     T1  R0     !Print current value of R0 as decimals.
 SHIFT     R0  1   1  !Bit-shift to the left by 1 bit. Equivalent to multiplying by 2.
+ENDLOOP   R1  R2
 
 !Demonstrate string printing.
-ENDLOOP   R1  R2     !Load each character into individual cells.
-LOADHEX   R0  48
+LOADHEX   R0  48     !Load each character into individual cells.
 STORECELL R0  CF4
 LOADHEX   R0  45
 STORECELL R0  CF5
@@ -69,4 +69,5 @@ PRINT     T3  R0  C  !Print "HELLO WORLD".
 
 !Finally, halt the program execution.
 !If execution isn't halted, the CPU keeps increating the PC until it either encounters new code or runs out of execution space.
+
 HALT                 !Anything after an ! is explicitly a comment. I hope you like my first language.
