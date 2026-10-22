@@ -26,7 +26,6 @@ def assemble():
                 case "PRINT":
                     machinecode[codelineindex*2] = 0x0 << 4 | hex_strip(command[1])
                     machinecode[codelineindex*2 + 1] = hex_strip(command[2]) << 4 | (int(command[3], 16) & 0xF)
-                    print(command[1], int(command[3], 16))
 
                 case "LOADCELL":
                     machinecode[codelineindex*2] = 0x1 << 4 | hex_strip(command[1])
