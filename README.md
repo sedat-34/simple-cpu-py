@@ -4,7 +4,7 @@
 See [LICENSE](LICENSE) for information.
 
 ## What is this?
-This is a simple emulated 16-bit CPU and assembler running on Python.
+This is a simple emulated 8-bit CPU and assembler running on Python.
 
 # Documentation
 
