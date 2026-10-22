@@ -6,8 +6,6 @@ See [LICENSE](LICENSE) for information.
 ## What is this?
 This is a simple emulated 16-bit CPU and assembler running on Python.
 
-Currently, only 7 of the 10 defined opcodes are supported in the assembler.
-
 # Documentation
 
 ## Specs
@@ -69,3 +67,9 @@ Finish the loop definition for the loop that uses RX for the loop iteration and 
 ### HALT
 
 Halt execution.
+
+# Setup and execution
+
+1) Install python 3.14.7 (minimum tested)
+2) Write your assembly code in main.scp
+3) run python main.py
