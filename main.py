@@ -1,7 +1,7 @@
 import assembler
 
 memory = assembler.assemble() #Assemble given scp (simple-cpu-py) program into custom hexadecimal format and load to memory
-print(list(memory))
+#print(list(memory))
 
 cpuregister = [None] * 16 #Init cpu registers R0-RF
 programcounter = 0X00 #Init pc from beginning of memory
@@ -13,42 +13,52 @@ halted = False
 opcodes = [None] * 16 #Initialise opcodes list.
 
 def print_cpu(R, T):
-    print(f"Printing register {R}, The type is currently {T}")
     if T == 0: #Print as hexadecimal
-        print(f"{cpuregister[R]:02X}")
+        print(f"R{R:X} is {cpuregister[R]:02X} in hex")
     elif T == 1: #Print as decimal
-        print(cpuregister[R])
+        print(f"R{R:X} is {cpuregister[R]} in decimal")
+    elif T == 2: #Print as binary (8-bits)
+        print(f"R{R} is {cpuregister[R]:08b} in binary")
 
 def load_byte_register(R, B):
     cpuregister[R] = B
-    print(f"Storing value {B} in register {R}")
+    print(f"Loading value {B} in register {R}")
     
 def load_cell_register(R, C):
     cpuregister[R] = memory[C]
+    print(f"Loading cell {C:X} in R{R:X}")
     
 def store_register_cell(R, C):
     memory[C] = cpuregister[R]
+    print(f"Storing R{R:X} in cell {C:X}")
 
 def add_bin(R, S, T):
     cpuregister[R] = (cpuregister[S] + cpuregister[T]) & 0XFF
+    print(f"R{S:X} + R{T:X} is stored in R{R:X}")
 
 def and_bin(R, S, T):
     cpuregister[R] = cpuregister[S] & cpuregister[T] & 0XFF
+    print(f"R{S:X} AND R{T:X} is stored in R{R:X}")
 
 def shift_bin(R, S, N):
     if S == 0:
         cpuregister[R] = cpuregister[R] >> N
+        print(f"Shifted contents of R{R:X} {N} times to the right.")
     elif S == 1:
         cpuregister[R] = (cpuregister[R] << N) & 0XFF
+        print(f"Shifted contents of R{R:X} {N} times to the left.")
 
 def init_loop(R, S, X):
     global programcounter
     cpuregister[R] = X #Set counter to provided value.
     cpuregister[S] = programcounter + 2 #Cell of the beginning of the loop contents, not the LOOP: statement.
+    print(f"Started a loop in codeline {programcounter + 2} which will run {X+1} times")
+    print(f"The loop counter is stored in R{R:X}, and the loop start is stored in R{R:X}")
 
 def check_loop(R, S):
     global programcounter, jumped
     if not (cpuregister[R] == 0):
+        print(f"The current loop will run {cpuregister[R]} more times")
         cpuregister[R] -= 1 #Reduce counter register's value by 1
         programcounter = cpuregister[S] #Set PC to beginning of loop.
         jumped = True
