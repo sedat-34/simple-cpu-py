@@ -78,8 +78,6 @@ Halt execution.
 
 A script cannot exceed 128 LOC.
 
-The assembler cannot detect invalid code dynamically.
-
 # Setup and execution
 
 1) Install python 3.14.7 (minimum tested)
