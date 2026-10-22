@@ -22,9 +22,11 @@ In code, a register of id X is represented as RX (single hex digit)
 
 In code, a cell of id XY is represented as CXY (two hex digits, pad 0 at the beginning if needed)
 
-### PRINT RX
+### PRINT RX TY
 
 Prints the data in register X to the terminal
+
+If Y == 0, prints as hexadecimals. If Y == 1, prints as decimals.
 
 ### LOADCELL RX CYZ
 
