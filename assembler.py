@@ -13,7 +13,6 @@ def assemble():
     codelines = rawcode.splitlines()
     for i in range(len(codelines)):
         codelines[i] = codelines[i].split("!")[0] #Remove comments, split all commands before an !.
-    print(codelines) #Print the full code with no comments.
     codelineindex = 0
 
     for line in codelines:
